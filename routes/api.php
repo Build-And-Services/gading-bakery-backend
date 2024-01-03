@@ -20,29 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::prefix('/v1')->group(function () {
-    Route::prefix('/products')->name('product.')->group(function () {
-        // isi sesua controller masing masing
-        Route::get('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::post('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::put('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::delete('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-    });
+    include __DIR__ . '/products.php';
 
     Route::prefix('/categories')->group(function () {
         // isi sesua controller masing masing
