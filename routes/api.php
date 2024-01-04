@@ -14,37 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 
 Route::prefix('/v1')->group(function () {
     include __DIR__ . '/products.php';
 
-    Route::prefix('/categories')->group(function () {
-        // isi sesua controller masing masing
-        Route::get('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::post('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::put('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::delete('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-    });
+    require __DIR__ . './category.php';
 
     Route::prefix('/stock')->group(function () {
         // isi sesua controller masing masing
@@ -94,3 +68,5 @@ Route::prefix('/v1')->group(function () {
         });
     });
 });
+
+require __DIR__ . './auth.php';
