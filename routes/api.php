@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/v1')->group(function () {
     include __DIR__ . '/products.php';
 
-    require __DIR__ . './category.php';
+    include __DIR__ . '/category.php';
 
     Route::prefix('/stock')->group(function () {
         // isi sesua controller masing masing
@@ -69,4 +69,4 @@ Route::prefix('/v1')->group(function () {
     });
 });
 
-require __DIR__ . './auth.php';
+include __DIR__ . '/auth.php';
