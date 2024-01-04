@@ -15,4 +15,19 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    public function getTotalIncreaseQuantity()
+    {
+        return $this->stocks()->where('type', 'increase')->sum('quantity');
+    }
+
+    public function getTotalDecreaseQuantity()
+    {
+        return $this->stocks()->where('type', 'decrease')->sum('quantity');
+    }
 }
