@@ -21,7 +21,6 @@ class ProductController extends BaseController
         try {
             $request->validate([
                 'name' => 'required',
-                'stock' => 'required|integer',
                 'image' => 'required|image|mimes:png,jpg,jpeg|max:5120',
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
@@ -36,8 +35,7 @@ class ProductController extends BaseController
 
             $product = Product::create([
                 'name' => $request->name,
-                'stock' => $request->stock,
-                'image' => $fileName,
+                'image' => url("/images/products/{$fileName}"),
                 'product_code' => $request->product_code,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,
@@ -64,7 +62,6 @@ class ProductController extends BaseController
         try {
             $request->validate([
                 'name' => 'required',
-                'stock' => 'required|integer',
                 'image' => 'image|mimes:png,jpg,jpeg|max:5120',
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
@@ -77,7 +74,6 @@ class ProductController extends BaseController
 
             $dataToUpdate = [
                 'name' => $request->name,
-                'stock' => $request->stock,
                 'product_code' => $request->product_code,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,

@@ -14,15 +14,21 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $categoryName = optional($this->category)->name;
+
+        $increaseQuantity = $this->getTotalIncreaseQuantity();
+        $decreaseQuantity = $this->getTotalDecreaseQuantity();
+        $totalQuantity = $increaseQuantity - $decreaseQuantity;
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'stock' => $this->stock,
             'image' => $this->image,
             'product_code' => $this->product_code,
             'purchase_price' => $this->purchase_price,
             'selling_price' => $this->selling_price,
-            'category' => $this->category->name
+            'category' => $categoryName,
+            'quantity' => $totalQuantity
         ];
     }
 }
