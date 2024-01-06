@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\DB;
 
 class TrancationController extends BaseController
 {
-    public function createTransaction(Request $request)
+    public function index()
+    {
+        $transaksi = Order::with('orderItems')->get();
+        dd($transaksi);
+    }
+    public function store(Request $request)
     {
         $request->validate([
             "user_id"  => ['required'],
