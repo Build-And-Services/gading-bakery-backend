@@ -12,8 +12,7 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $categories = Category::with('product')
-            ->get();
+            $categories = Category::with('product')->get();
             return $this->sendResponse(CategoryResource::collection($categories), "Successfully get data", 200);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);

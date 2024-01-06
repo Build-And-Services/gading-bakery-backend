@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -53,5 +54,14 @@ class Handler extends ExceptionHandler
                 ], 404);
             }
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof AuthenticationException) {
+            return response()->json(['error' => 'Unauthorized or Invalid Token'], 401);
+        }
+
+        return parent::render($request, $exception);
     }
 }
