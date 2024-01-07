@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Category;
+use App\Models\Stock;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
 class ProductController extends BaseController
@@ -18,15 +19,16 @@ class ProductController extends BaseController
 
     public function store(Request $request)
     {
+        \DB::beginTransaction();
         try {
             $request->validate([
                 'name' => 'required',
-                'stock' => 'required|integer',
                 'image' => 'required|image|mimes:png,jpg,jpeg|max:5120',
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
                 'category_id' => 'required',
+                'quantity' => 'required|integer',
             ]);
 
             Category::findOrFail($request->category_id);
@@ -36,15 +38,22 @@ class ProductController extends BaseController
 
             $product = Product::create([
                 'name' => $request->name,
-                'stock' => $request->stock,
-                'image' => $fileName,
+                'image' => url("/images/products/{$fileName}"),
                 'product_code' => $request->product_code,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,
                 'category_id' => $request->category_id,
             ]);
+
+            $product->stocks()->create([
+                'quantity' => $request->quantity,
+                'type' => 'increase'
+            ]);
+
+            \DB::commit();
             return $this->sendResponse(new ProductResource($product), 'Product created successfully', 201);
         } catch (\Exception $e) {
+            \DB::rollBack();
             return $this->sendError($e->getMessage(), 400);
         }
     }
@@ -64,7 +73,6 @@ class ProductController extends BaseController
         try {
             $request->validate([
                 'name' => 'required',
-                'stock' => 'required|integer',
                 'image' => 'image|mimes:png,jpg,jpeg|max:5120',
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
@@ -77,7 +85,6 @@ class ProductController extends BaseController
 
             $dataToUpdate = [
                 'name' => $request->name,
-                'stock' => $request->stock,
                 'product_code' => $request->product_code,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,
@@ -85,9 +92,18 @@ class ProductController extends BaseController
             ];
 
             if ($request->hasFile('image')) {
+                $url = $product->image;
+                $oldFile = pathinfo($url);
+                $oldFilePath = public_path('images/products/' . $oldFile['basename']);
+
+                // delete old image
+                if ($oldFile && \File::exists($oldFilePath)) {
+                    \File::delete($oldFilePath);
+                }
+
                 $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
                 $request->image->move(public_path('images/products'), $fileName);
-                $dataToUpdate['image'] = $fileName;
+                $dataToUpdate['image'] = url("/images/products/{$fileName}");
             }
 
             $product->update($dataToUpdate);
@@ -102,8 +118,9 @@ class ProductController extends BaseController
         try {
             $product = Product::findOrFail($id);
 
-            $fileName = $product->image;
-            $path = public_path('images/products/' . $fileName);
+            $url = $product->image;
+            $fileName = pathinfo($url);
+            $path = public_path('images/products/' . $fileName['basename']);
 
             if ($fileName && \File::exists($path)) {
                 \File::delete($path);

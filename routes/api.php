@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
     include __DIR__ . '/products.php';
+    include __DIR__ . '/stocks.php';
 
     include __DIR__ . '/category.php';
 
