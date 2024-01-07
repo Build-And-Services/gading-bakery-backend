@@ -81,9 +81,18 @@ class ProductController extends BaseController
             ];
 
             if ($request->hasFile('image')) {
+                $url = $product->image;
+                $oldFile = pathinfo($url);
+                $oldFilePath = public_path('images/products/' . $oldFile['basename']);
+
+                // delete old image
+                if ($oldFile && \File::exists($oldFilePath)) {
+                    \File::delete($oldFilePath);
+                }
+
                 $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
                 $request->image->move(public_path('images/products'), $fileName);
-                $dataToUpdate['image'] = $fileName;
+                $dataToUpdate['image'] = url("/images/products/{$fileName}");
             }
 
             $product->update($dataToUpdate);
@@ -98,8 +107,9 @@ class ProductController extends BaseController
         try {
             $product = Product::findOrFail($id);
 
-            $fileName = $product->image;
-            $path = public_path('images/products/' . $fileName);
+            $url = $product->image;
+            $fileName = pathinfo($url);
+            $path = public_path('images/products/' . $fileName['basename']);
 
             if ($fileName && \File::exists($path)) {
                 \File::delete($path);
