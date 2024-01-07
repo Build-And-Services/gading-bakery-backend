@@ -61,9 +61,8 @@ class CategoryController extends BaseController
                 $oldFile = pathinfo($url);
                 $oldFilePath = public_path('images/categories/' . $oldFile['basename']);
 
-                // delete old image
-                if ($oldFile && \File::exists($oldFilePath)) {
-                    \File::delete($oldFilePath);
+                if ($oldFile && File::exists($oldFilePath)) {
+                    File::delete($oldFilePath);
                 }
 
                 $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
@@ -87,8 +86,8 @@ class CategoryController extends BaseController
             $fileName = pathinfo($url);
             $path = public_path('images/categories/' . $fileName['basename']);
 
-            if ($fileName && \File::exists($path)) {
-                \File::delete($path);
+            if ($fileName && File::exists($path)) {
+                File::delete($path);
             }
 
 
