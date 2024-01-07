@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Category;
+use App\Models\Stock;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
 class ProductController extends BaseController
@@ -18,6 +19,7 @@ class ProductController extends BaseController
 
     public function store(Request $request)
     {
+        \DB::beginTransaction();
         try {
             $request->validate([
                 'name' => 'required',
@@ -26,6 +28,7 @@ class ProductController extends BaseController
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
                 'category_id' => 'required',
+                'quantity' => 'required|integer',
             ]);
 
             Category::findOrFail($request->category_id);
@@ -41,8 +44,16 @@ class ProductController extends BaseController
                 'selling_price' => $request->selling_price,
                 'category_id' => $request->category_id,
             ]);
+
+            $product->stocks()->create([
+                'quantity' => $request->quantity,
+                'type' => 'increase'
+            ]);
+
+            \DB::commit();
             return $this->sendResponse(new ProductResource($product), 'Product created successfully', 201);
         } catch (\Exception $e) {
+            \DB::rollBack();
             return $this->sendError($e->getMessage(), 400);
         }
     }
