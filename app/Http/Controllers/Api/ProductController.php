@@ -27,11 +27,9 @@ class ProductController extends BaseController
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
-                'category_id' => 'required',
+                'category_id' => 'required|exists:categories,id',
                 'quantity' => 'required|integer',
             ]);
-
-            Category::findOrFail($request->category_id);
 
             $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
             $request->image->move(public_path('images/products'), $fileName);
@@ -77,11 +75,10 @@ class ProductController extends BaseController
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
-                'category_id' => 'required',
+                'category_id' => 'required|exists:categories,id',
             ]);
 
             $product = Product::findOrFail($id);
-            Category::findOrFail($request->category_id);
 
             $dataToUpdate = [
                 'name' => $request->name,
