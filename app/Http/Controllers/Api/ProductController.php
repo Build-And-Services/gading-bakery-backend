@@ -27,11 +27,7 @@ class ProductController extends BaseController
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
-<<<<<<< HEAD
                 'category_id' => 'required|exists:categories,id',
-=======
-                'category_id' => 'required',
->>>>>>> d54fd5fe772791c3d8271724b3d5e05a3e4c924e
                 'quantity' => 'required|integer',
             ]);
 
