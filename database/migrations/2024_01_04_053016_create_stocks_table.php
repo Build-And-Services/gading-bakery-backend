@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->enum('type', ['increase', 'decrease']);
             $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
