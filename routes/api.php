@@ -20,6 +20,7 @@ Route::prefix('/v1')->group(function () {
     include __DIR__ . '/stocks.php';
 
     include __DIR__ . '/category.php';
+    include __DIR__ . '/profiles.php';
 
     Route::prefix('/stock')->group(function () {
         // isi sesua controller masing masing
