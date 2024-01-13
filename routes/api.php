@@ -22,6 +22,8 @@ Route::prefix('/v1')->group(function () {
     include __DIR__ . '/category.php';
     include __DIR__ . '/profiles.php';
 
+    include __DIR__ . '/dashboard.php';
+
     Route::prefix('/stock')->group(function () {
         // isi sesua controller masing masing
         Route::get('/', function () {
