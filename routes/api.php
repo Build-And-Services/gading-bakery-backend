@@ -50,16 +50,8 @@ Route::prefix('/v1')->group(function () {
 
     Route::prefix('/transactions')->group(function () {
         // isi sesua controller masing masing
-        Route::get('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::post('/', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
+        Route::get('/', [App\Http\Controllers\Api\TrancationController::class, 'index']);
+        Route::post('/', [App\Http\Controllers\Api\TrancationController::class, 'store']);
         Route::put('/:id', function () {
             return json_encode([
                 "message" => "hallo",

@@ -9,5 +9,17 @@ class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['*'];
+    protected $guarded = ['id'];
+
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+
 }
