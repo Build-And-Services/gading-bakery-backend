@@ -17,17 +17,25 @@ class TransactionResource extends JsonResource
         return [
             'id' => $this->id,
             'nominal' => $this->nominal,
-            'user_id' => $this->user_id,
+            'user_id' => $this->user->name,
             'total_pembelian' => $this->calculateTotalOrderPrice(),
-            'order_items' => $this->orderItems,
+            'order_items' => $this->orderItems()
+                ->get()
+                ->map(function ($query) {
+                    return [
+                        "id" => $query->id,
+                        "product_id" => $query->products->id,
+                        "quantity" => $query->quantity,
+                        "products_name" => $query->products->name,
+                        "products_image" => $query->products->image,
+                        "purchase_price" => $query->products->purchase_price,
+                        "selling_price" => $query->products->selling_price,
+                        'product_category' => $query->products->category->name,
+                        "created_at" => $query->created_at,
+                        "updated_at" => $query->updated_at,
+                    ];
+                }),
         ];
-    }
-
-    private function calculateTotalOrderPrice()
-    {
-        return $this->orderItems->sum(function ($orderItem) {
-            return $orderItem->quantity * $orderItem->products->selling_price;
-        });
     }
 
 
