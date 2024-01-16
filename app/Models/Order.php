@@ -19,4 +19,14 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class, 'order_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function calculateTotalOrderPrice()
+    {
+        return $this->orderItems->sum(function ($orderItem) {
+            return $orderItem->quantity * $orderItem->products->selling_price;
+        });
+    }
 }
