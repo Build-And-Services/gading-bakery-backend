@@ -13,7 +13,7 @@ class ProductController extends BaseController
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::latest()->get();
         return $this->sendResponse(ProductResource::collection($products), "Successfully get data", 200);
     }
 
