@@ -52,6 +52,7 @@ Route::prefix('/v1')->group(function () {
         // isi sesua controller masing masing
         Route::get('/', [App\Http\Controllers\Api\TrancationController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\TrancationController::class, 'store']);
+        Route::get('/{id}', [App\Http\Controllers\Api\TrancationController::class, 'show']);
         Route::put('/:id', function () {
             return json_encode([
                 "message" => "hallo",

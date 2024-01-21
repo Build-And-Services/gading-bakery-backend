@@ -29,9 +29,9 @@ class TrancationController extends BaseController
     {
         try {
             $request->validate([
-                "user_id"  => ['required'],
-                "nominal"  => ['required'],
-                "order_items"  => ['required'],
+                "user_id" => ['required'],
+                "nominal" => ['required'],
+                "order_items" => ['required'],
             ]);
             DB::beginTransaction();
             $order = Order::create([
@@ -68,6 +68,15 @@ class TrancationController extends BaseController
             return response()->json([
                 "message" => $th->getMessage(),
             ]);
+        }
+    }
+    public function show($id)
+    {
+        try {
+            $order = Order::findOrFail($id);
+            return $this->sendResponse(new TransactionResource($order), "Successfully get data", 200);
+        } catch (\Exception $e) {
+            return $this->sendError($e->getMessage(), 400);
         }
     }
 }
