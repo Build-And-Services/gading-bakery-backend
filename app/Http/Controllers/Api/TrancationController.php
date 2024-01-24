@@ -27,13 +27,15 @@ class TrancationController extends BaseController
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
         try {
             $request->validate([
                 "user_id" => ['required'],
                 "nominal" => ['required'],
-                "order_items" => ['required'],
+                "order_items" => ['required', 'array', 'min:1'],
+                "order_items.*.product_id" => ['required', 'exists:products,id'],
+                "order_items.*.quantity" => ['required', 'integer', 'min:1']
             ]);
-            DB::beginTransaction();
             $order = Order::create([
                 "user_id" => $request->user_id,
                 "nominal" => $request->nominal,
@@ -41,11 +43,18 @@ class TrancationController extends BaseController
 
             $order_items = $request->order_items;
             foreach ($order_items as $order_item) {
+                $product = Product::findOrFail($order_item["product_id"]);
+
+                if ($product->getTotalQuantity() < $order_item['quantity']) {
+                    throw new \Exception('Amount exceeds the limit');
+                }
 
                 OrderItem::create([
                     "product_id" => $order_item["product_id"],
                     "order_id" => $order->id,
-                    "quantity" => $order_item["quantity"]
+                    "quantity" => $order_item["quantity"],
+                    "purchase_price" => $product->purchase_price,
+                    "selling_price" => $product->selling_price,
                 ]);
 
                 Stock::create([
@@ -59,7 +68,7 @@ class TrancationController extends BaseController
 
             return $this->sendResponse([
                 "order" => $order,
-                "order_items" => $request->items,
+                "order_items" => $order->orderItems()->get(),
             ], "succes to transaction", 201);
         } catch (\Throwable $th) {
             //throw $th;
