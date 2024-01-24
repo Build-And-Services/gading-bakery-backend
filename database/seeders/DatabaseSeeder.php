@@ -33,11 +33,5 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StockSeeder::class,
         ]);
-        $this->call([
-            OrderSeeder::class,
-        ]);
-        $this->call([
-            OrderItemSeeder::class,
-        ]);
     }
 }

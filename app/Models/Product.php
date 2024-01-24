@@ -30,4 +30,8 @@ class Product extends Model
     {
         return $this->stocks()->where('type', 'decrease')->sum('quantity');
     }
+    public function getTotalQuantity()
+    {
+        return $this->getTotalIncreaseQuantity() - $this->getTotalDecreaseQuantity();
+    }
 }
