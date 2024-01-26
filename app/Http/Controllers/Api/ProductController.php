@@ -11,9 +11,13 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 
 class ProductController extends BaseController
 {
-    public function index()
+    public function index($sortBy)
     {
-        $products = Product::latest()->get();
+        if ($sortBy == "newest") {
+            $products = Product::all();
+        } else {
+            $products = Product::latest()->get();
+        }
         return $this->sendResponse(ProductResource::collection($products), "Successfully get data", 200);
     }
 

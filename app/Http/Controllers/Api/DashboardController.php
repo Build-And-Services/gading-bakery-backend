@@ -17,23 +17,22 @@ class DashboardController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($sortBy)
     {
-        // $category = Category::all();
         $category = DB::table('categories')
             ->select('id', 'name', 'image')
             ->get();
-        $latestProducts = Product::latest()->take(6)->get();
+        $products = Product::latest()->take(6)->get();
         return $this->sendResponse(
             [
                 'categories' => $category,
-                'products' => ProductResource::collection($latestProducts)
+                'total_categories' => $category->count(),
+                'products' => ProductResource::collection($products)
             ],
             "Successfully get 6 latest data",
             200
         );
     }
-
     /**
      * Show the form for creating a new resource.
      *
