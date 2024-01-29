@@ -26,7 +26,13 @@ class Order extends Model
     public function calculateTotalOrderPrice()
     {
         return $this->orderItems->sum(function ($orderItem) {
-            return $orderItem->quantity * $orderItem->products->selling_price;
+            return $orderItem->quantity * $orderItem->selling_price;
+        });
+    }
+    public function calculateProfit()
+    {
+        return $this->orderItems->sum(function ($orderItem) {
+            return $orderItem->quantity * ($orderItem->selling_price - $orderItem->purchase_price);
         });
     }
 }
