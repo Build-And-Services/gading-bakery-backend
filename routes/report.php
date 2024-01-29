@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\TransactionReportController;
 
 Route::prefix('/reports')->group(function () {
     // isi sesua controller masing masing
@@ -10,4 +11,5 @@ Route::prefix('/reports')->group(function () {
     Route::get('/products/{productId}', [\App\Http\Controllers\Api\ReportController::class, 'showProductReports']);
     Route::get('/categories', [\App\Http\Controllers\Api\ReportController::class, 'categoryReports']);
     Route::get('/categories/{categoryId}', [\App\Http\Controllers\Api\ReportController::class, 'showCategoryReports']);
+    Route::get('/{filter}', [TransactionReportController::class, 'getReports']);
 });
