@@ -25,7 +25,7 @@ class TransactionDetailResource extends JsonResource
                 ->map(function ($query) {
                     return [
                         "quantity" => $query->quantity,
-                        "products_name" => $query->products_name,
+                        "products_name" => $query->product_name,
                         "product_image" => $query->product_image,
                         "selling_price" => $query->selling_price,
                         "category_name" => $query->category_name
