@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\HistoryTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,16 +56,7 @@ Route::prefix('/v1')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\TrancationController::class, 'index']);
         Route::post('/', [App\Http\Controllers\Api\TrancationController::class, 'store']);
         Route::get('/{id}', [App\Http\Controllers\Api\TrancationController::class, 'show']);
-        Route::put('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
-        Route::delete('/:id', function () {
-            return json_encode([
-                "message" => "hallo",
-            ]);
-        });
+        Route::get('/filter/{filter}', [HistoryTransactionController::class, 'getReports']);
     });
 });
 
