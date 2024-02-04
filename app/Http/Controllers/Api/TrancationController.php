@@ -49,13 +49,14 @@ class TrancationController extends BaseController
                     throw new \Exception('Amount exceeds the limit');
                 }
 
+                $categoryName = optional($product->category)->name;
                 OrderItem::create([
                     "order_id" => $order->id,
                     "product_name" => $product->name,
                     "product_image" => $product->image,
                     "purchase_price" => $product->purchase_price,
                     "selling_price" => $product->selling_price,
-                    "category_name" => $product->category->name,
+                    "category_name" => $categoryName,
                     "quantity" => $order_item["quantity"],
                 ]);
 
