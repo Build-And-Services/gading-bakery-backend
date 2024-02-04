@@ -19,7 +19,9 @@ class TransactionResource extends JsonResource
             'nominal' => $this->nominal,
             'user_id' => $this->user->name,
             'total_pembelian' => $this->calculateTotalOrderPrice(),
-            'product_length' => $this->orderItems()->count()
+            'product_length' => $this->orderItems()->count(),
+            'profit' => $this->calculateProfit(),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
 
