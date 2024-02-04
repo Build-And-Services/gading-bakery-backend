@@ -21,7 +21,7 @@ class CategorySeeder extends Seeder
         $image = $faker->image('public/images/categories', 640, 480, null, false);
         Category::create([
             'name' => $faker->name,
-            'image' => 'http://127.0.0.1:8000/images/categories/' . $image,
+            'image' => 'https://stagging.gading-bakery.com/images/categories/' . $image,
         ]);
     }
 }
