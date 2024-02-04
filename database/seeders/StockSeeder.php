@@ -16,7 +16,7 @@ class StockSeeder extends Seeder
     public function run()
     {
         Stock::create([
-            'quantity' => 10,
+            'quantity' => 100,
             'type' => 'increase',
             'product_id' => 1,
         ]);
