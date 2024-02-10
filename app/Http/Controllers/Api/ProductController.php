@@ -24,11 +24,13 @@ class ProductController extends BaseController
             $request->validate([
                 'name' => 'required',
                 'image' => 'required|image|mimes:png,jpg,jpeg|max:5120',
-                'product_code' => 'required',
+                'product_code' => 'required|unique:products,product_code',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
                 'category_id' => 'required|exists:categories,id',
                 'quantity' => 'required|integer',
+            ], [
+                'product_code.unique' => 'The :attribute has already been taken.'
             ]);
 
             $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
