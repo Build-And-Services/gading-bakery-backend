@@ -15,17 +15,20 @@ class StockReportController extends BaseController
     {
         try {
             $stockReport = DB::table('products')
-                            ->join('stocks', 'products.id', '=', 'stocks.product_id')
-                            ->select('products.name as product_name', 'products.product_code as product_code',
-                                DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
-                                DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
-                            )
-                            ->groupBy('products.name', 'products.product_code')
-                            ->get();
+                ->join('stocks', 'products.id', '=', 'stocks.product_id')
+                ->select(
+                    'products.id',
+                    'products.name as product_name',
+                    'products.product_code as product_code',
+                    DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
+                    DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
+                )
+                ->groupBy('products.name', 'products.product_code')
+                ->get();
 
             return $this->sendResponse(StockReportResource::collection($stockReport), 'Successfully get data', 200);
 
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
     }
@@ -38,18 +41,21 @@ class StockReportController extends BaseController
         $day = $currentDate->day;
         try {
             $stockReport = DB::table('products')
-                            ->join('stocks', 'products.id', '=', 'stocks.product_id')
-                            ->select('products.name as product_name', 'products.product_code as product_code',
-                                DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
-                                DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
-                            )
-                            ->whereDay('stocks.created_at', $day)
-                            ->groupBy('products.name', 'products.product_code')
-                            ->get();
+                ->join('stocks', 'products.id', '=', 'stocks.product_id')
+                ->select(
+                    'products.id',
+                    'products.name as product_name',
+                    'products.product_code as product_code',
+                    DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
+                    DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
+                )
+                ->whereDay('stocks.created_at', $day)
+                ->groupBy('products.name', 'products.product_code')
+                ->get();
 
             return $this->sendResponse(StockReportResource::collection($stockReport), 'Successfully get data', 200);
 
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
     }
@@ -58,18 +64,21 @@ class StockReportController extends BaseController
     {
         try {
             $stockReport = DB::table('products')
-                            ->join('stocks', 'products.id', '=', 'stocks.product_id')
-                            ->select('products.name as product_name', 'products.product_code as product_code',
-                                DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
-                                DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
-                            )
-                            ->whereMonth('stocks.created_at', $month)
-                            ->groupBy('products.name', 'products.product_code')
-                            ->get();
+                ->join('stocks', 'products.id', '=', 'stocks.product_id')
+                ->select(
+                    'products.id',
+                    'products.name as product_name',
+                    'products.product_code as product_code',
+                    DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
+                    DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
+                )
+                ->whereMonth('stocks.created_at', $month)
+                ->groupBy('products.name', 'products.product_code')
+                ->get();
 
             return $this->sendResponse(StockReportResource::collection($stockReport), 'Successfully get data', 200);
 
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
     }
@@ -78,21 +87,24 @@ class StockReportController extends BaseController
     {
         try {
             $stockReport = DB::table('products')
-                            ->join('stocks', 'products.id', '=', 'stocks.product_id')
-                            ->select('products.name as product_name', 'products.product_code as product_code',
-                                DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
-                                DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
-                            )
-                            ->whereYear('stocks.created_at', $year)
-                            ->groupBy('products.name', 'products.product_code')
-                            ->get();
+                ->join('stocks', 'products.id', '=', 'stocks.product_id')
+                ->select(
+                    'products.id',
+                    'products.name as product_name',
+                    'products.product_code as product_code',
+                    DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
+                    DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
+                )
+                ->whereYear('stocks.created_at', $year)
+                ->groupBy('products.name', 'products.product_code')
+                ->get();
 
-            if ($stockReport->count() == 0 ) {
-                throw new \Exception ("data not found") ;
+            if ($stockReport->count() == 0) {
+                throw new \Exception("data not found");
             }
             return $this->sendResponse(StockReportResource::collection($stockReport), 'Successfully get data', 200);
 
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
     }
@@ -101,21 +113,24 @@ class StockReportController extends BaseController
     {
         try {
             $stockReport = DB::table('products')
-                            ->join('stocks', 'products.id', '=', 'stocks.product_id')
-                            ->select('products.name as product_name', 'products.product_code as product_code',
-                                DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
-                                DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
-                            )
-                            ->whereDate('stocks.created_at', $date)
-                            ->groupBy('products.name', 'products.product_code')
-                            ->get();
+                ->join('stocks', 'products.id', '=', 'stocks.product_id')
+                ->select(
+                    'products.id',
+                    'products.name as product_name',
+                    'products.product_code as product_code',
+                    DB::raw('SUM(CASE WHEN stocks.type = "increase" THEN stocks.quantity ELSE 0 END) as increase'),
+                    DB::raw('SUM(CASE WHEN stocks.type = "decrease" THEN stocks.quantity ELSE 0 END) as decrease')
+                )
+                ->whereDate('stocks.created_at', $date)
+                ->groupBy('products.name', 'products.product_code')
+                ->get();
 
-            if ($stockReport->count() == 0 ) {
-                throw new \Exception ("data not found") ;
+            if ($stockReport->count() == 0) {
+                throw new \Exception("data not found");
             }
             return $this->sendResponse(StockReportResource::collection($stockReport), 'Successfully get data', 200);
 
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
     }

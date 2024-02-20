@@ -15,6 +15,7 @@ class StockReportResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'product_name' => $this->product_name,
             'product_code' => $this->product_code,
             'increase' => $this->increase,
