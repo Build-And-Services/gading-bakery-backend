@@ -19,7 +19,7 @@ class TrancationController extends BaseController
     public function index()
     {
         try {
-            $transaksi = Order::all();
+            $transaksi = Order::orderBy('created_at', 'desc')->get();
             return $this->sendResponse(TransactionResource::collection($transaksi), "Successfully get data", 200);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
@@ -30,6 +30,7 @@ class TrancationController extends BaseController
     {
         DB::beginTransaction();
         try {
+            // dd($request->all());
             $request->validate([
                 "user_id" => ['required'],
                 "nominal" => ['required'],
