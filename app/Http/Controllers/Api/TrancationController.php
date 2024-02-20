@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Http\Resources\TransactionDetailResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -40,7 +41,6 @@ class TrancationController extends BaseController
                 "user_id" => $request->user_id,
                 "nominal" => $request->nominal,
             ]);
-
             $order_items = $request->order_items;
             foreach ($order_items as $order_item) {
                 $product = Product::findOrFail($order_item["product_id"]);
@@ -49,12 +49,15 @@ class TrancationController extends BaseController
                     throw new \Exception('Amount exceeds the limit');
                 }
 
+                $categoryName = optional($product->category)->name;
                 OrderItem::create([
-                    "product_id" => $order_item["product_id"],
                     "order_id" => $order->id,
-                    "quantity" => $order_item["quantity"],
+                    "product_name" => $product->name,
+                    "product_image" => $product->image,
                     "purchase_price" => $product->purchase_price,
                     "selling_price" => $product->selling_price,
+                    "category_name" => $categoryName,
+                    "quantity" => $order_item["quantity"],
                 ]);
 
                 Stock::create([
@@ -66,24 +69,21 @@ class TrancationController extends BaseController
 
             DB::commit();
 
-            return $this->sendResponse([
-                "order" => $order,
-                "order_items" => $order->orderItems()->get(),
-            ], "succes to transaction", 201);
+            return $this->sendResponse(new TransactionDetailResource($order), "succes to transaction", 201);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
 
             return response()->json([
                 "message" => $th->getMessage(),
-            ]);
+            ], 403);
         }
     }
     public function show($id)
     {
         try {
             $order = Order::findOrFail($id);
-            return $this->sendResponse(new TransactionResource($order), "Successfully get data", 200);
+            return $this->sendResponse(new TransactionDetailResource($order), "Successfully get data", 200);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }

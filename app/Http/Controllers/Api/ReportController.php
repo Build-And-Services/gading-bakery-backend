@@ -30,7 +30,7 @@ class ReportController extends BaseController
             foreach ($orders as $order) {
                 $orderItems = $order->orderItems;
                 $orderTotalPrice = $orderItems->sum(function ($orderItem) {
-                    return $orderItem->products->selling_price * $orderItem->quantity;
+                    return $orderItem->selling_price * $orderItem->quantity;
                 });
 
                 $orderTotalQuantity = $orderItems->sum('quantity');
@@ -49,7 +49,7 @@ class ReportController extends BaseController
                     'products' => $orderItems->map(function ($orderItem) {
                         return [
                             'name' => $orderItem->products->name,
-                            'category' => $orderItem->products->category->name,
+                            'category' => $orderItem->products->category,
                             'total_quantity' => $orderItem->quantity,
                             'selling_price' => $orderItem->products->selling_price,
                         ];
@@ -97,10 +97,8 @@ class ReportController extends BaseController
     public function categoryReports()
     {
         try {
-            $salesData = OrderItem::join('products', 'order_items.product_id', '=', 'products.id')
-                ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->select('categories.name as category_name', \DB::raw('SUM(order_items.quantity) as total_quantity'))
-                ->groupBy('categories.id')
+            $salesData = OrderItem::select('category_name', \DB::raw('SUM(order_items.quantity) as total_quantity'))
+                ->groupBy('category_name')
                 ->get();
 
             return $this->sendResponse(CategoryReportResource::collection($salesData), 'Successfully get data', 200);
