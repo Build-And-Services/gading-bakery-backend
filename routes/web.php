@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UsersController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +21,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
+
+Route::middleware('auth')->group(function () {
+    Route::prefix('/dashboard')->group(function(){
+       Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); 
+    });
+    Route::prefix('/products')->group(function() {
+        Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    });
+    Route::prefix('/categories')->group(function() {
+        Route::get('/', [CategoriesController::class, 'index'])->name('category.index');
+    });
+    Route::prefix('/users')->group(function() {
+        Route::get('/', [UsersController::class, 'index'])->name('user.index');
+    });
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
