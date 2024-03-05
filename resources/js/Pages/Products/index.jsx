@@ -1,13 +1,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AddProduct from './Partials/AddProduct';
+import { router } from '@inertiajs/react'
 
 export default function Products({ products, categories, auth, errors }) {
     const [show, setShow] = useState(false);
-
+    // const [errors, setErrors] = useState([]);
     const toggleAddProduct = () => {
         setShow(prevState => !prevState);
+    }
+    console.log(errors)
+
+    const deleteProduct = async (id) => {
+        router.delete(`/products/delete/${id}`);
     }
 
     return (
@@ -16,7 +22,15 @@ export default function Products({ products, categories, auth, errors }) {
             errors={errors}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>}
         >
+            <div>
+            {errors && errors.message && (
+                <div className="alert alert-danger">
+                    {errors.message}
+                </div>
+            )}
+            </div>
             <Head title="Products" />
+
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -50,12 +64,10 @@ export default function Products({ products, categories, auth, errors }) {
                                                 <td className='p-2 border border-slate-700'>{ item.purchase_price }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.total_stock }</td>
                                                 <td className='p-2 border border-slate-700 flex gap-1 justify-center'>
-                                                    <button className='px-2 py-1 rounded-md bg-red-800 text-white'>
-                                                        delete
-                                                    </button>
-                                                    <button className='px-2 py-1 rounded-md bg-green-800 text-white'>
+                                                    <button type="button" className='px-2 py-1 rounded-md bg-red-800 text-white' onClick={() => deleteProduct(item.id)}>delete</button>
+                                                    <Link href={route('product.edit', item.id)} className='px-2 py-1 rounded-md bg-green-800 text-white'>
                                                         edit
-                                                    </button>
+                                                    </Link>
                                                 </td>
                                             </tr>
                                         )) : (
