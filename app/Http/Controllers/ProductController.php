@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use File;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Inertia\Inertia;
 use Inertia\Response;
-      use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -20,8 +21,10 @@ class ProductController extends Controller
                         ->select(
                             'products.id',
                             'products.name',
+                            'products.product_code',
                             'products.selling_price',
                             'products.purchase_price',
+                            'products.image',
                             'categories.name as category',
                             DB::raw("SUM(CASE WHEN stocks.type = 'increase' THEN stocks.quantity ELSE -stocks.quantity END) AS total_stock")
                         )->get();
@@ -88,21 +91,44 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::with('stocks')->findOrFail(intval($id));
+
+            $dataToUpdate = [
+                'name' => $request->name,
+                'product_code' => $request->product_code,
+                'purchase_price' => $request->purchase_price,
+                'selling_price' => $request->selling_price,
+                'category_id' => $request->category_id,
+            ];
+
             $quantity = $product->getTotalQuantity();
             if ($quantity < $request->quantity) {
                 Stock::create(['stock'=> $request->quantity-$quantity, 'product_id' => $product->id, 'type' => 'increase']);
             } else if ($quantity > $request->quantity) {
                 Stock::create(['quantity'=> $quantity-$request->quantity, 'product_id' => $product->id, 'type' => 'decrease']);
             }
-            $product->update($request->all());
+
+            if ($request->hasFile('image')) {
+                $url = $product->image;
+                $oldFile = pathinfo($url);
+                $oldFilePath = public_path('images/products/' . $oldFile['basename']);
+
+                if ($oldFile && File::exists($oldFilePath)) {
+                    File::delete($oldFilePath);
+                }
+
+                $fileName = date('YmdHis') . '-image' . '.' . $request->image->extension();
+                $request->image->move(public_path('images/products'), $fileName);
+                $dataToUpdate['image'] = url("/images/products/{$fileName}");
+            } else{
+                $dataToUpdate["image"] = $request->image;
+            }
+
+            $product->update($dataToUpdate);
             DB::commit();
             return redirect(route('product.index'))->with('success','data successfully update');
-            //code...
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             DB::rollBack();
-            // dd($th);
-            return redirect()->back()->withErrors('errors', $th->getMessage());
-            // return redirect()->back()->with('errors', '$th->getMessage()');
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

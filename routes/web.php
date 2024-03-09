@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('/categories')->group(function() {
         Route::get('/', [CategoriesController::class, 'index'])->name('category.index');
+        Route::post('/', [CategoriesController::class, 'store'])->name('category.store');
+        Route::get('/edit/{id}', [CategoriesController::class, 'edit'])->name('category.edit');
+        Route::post('/update/{id}', [CategoriesController::class, 'update'])->name('category.update');
+        Route::delete('/delete/{id}', [CategoriesController::class, 'destroy'])->name('category.destroy');
     });
     Route::prefix('/users')->group(function() {
         Route::get('/', [UsersController::class, 'index'])->name('user.index');

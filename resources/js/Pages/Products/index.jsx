@@ -46,10 +46,12 @@ export default function Products({ products, categories, auth, errors }) {
                                     <tr className='text-start'>
                                         <th className='border border-slate-600'>Id</th>
                                         <th className='border border-slate-600'>Nama</th>
-                                        <th className='border border-slate-600'>Kategory</th>
+                                        <th className='border border-slate-600'>Kode Produk</th>
+                                        <th className='border border-slate-600'>Category</th>
                                         <th className='border border-slate-600'>Harga Jual</th>
                                         <th className='border border-slate-600'>Harga Dasar</th>
                                         <th className='border border-slate-600'>Stock</th>
+                                        <th className='border border-slate-600'>Image</th>
                                         <th className='border border-slate-600'>Action</th>
                                     </tr>
                                 </thead>
@@ -59,15 +61,23 @@ export default function Products({ products, categories, auth, errors }) {
                                             <tr key={index}>
                                                 <td className='p-2 border border-slate-700'>{ index + 1 }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.name }</td>
+                                                <td className='p-2 border border-slate-700'>{ item.product_code }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.category }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.selling_price }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.purchase_price }</td>
                                                 <td className='p-2 border border-slate-700'>{ item.total_stock }</td>
-                                                <td className='p-2 border border-slate-700 flex gap-1 justify-center'>
-                                                    <button type="button" className='px-2 py-1 rounded-md bg-red-800 text-white' onClick={() => deleteProduct(item.id)}>delete</button>
-                                                    <Link href={route('product.edit', item.id)} className='px-2 py-1 rounded-md bg-green-800 text-white'>
-                                                        edit
-                                                    </Link>
+                                                <td className='p-2 border border-slate-700'>
+                                                    <div className='flex justify-center'>
+                                                        <img src={ item.image } className='w-[80px]'  alt="" />
+                                                    </div>
+                                                </td>
+                                                <td className='border border-slate-600'>
+                                                    <div className='p-2 flex justify-center gap-2'>
+                                                        <button type="button" className='px-2 py-2 rounded-md bg-red-800 text-white' onClick={() => deleteProduct(item.id)}>delete</button>
+                                                        <Link href={route('product.edit', item.id)} className='px-2 py-2 rounded-md bg-green-800 text-white'>
+                                                            edit
+                                                        </Link>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )) : (
