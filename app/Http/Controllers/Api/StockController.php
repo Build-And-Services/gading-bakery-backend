@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductStockResource;
 use App\Http\Resources\StockResource;
 use App\Models\Product;
 use App\Models\Stock;
@@ -51,12 +52,11 @@ class StockController extends BaseController
             $decreaseQuantity = $product->getTotalDecreaseQuantity();
             $totalQuantity = $increaseQuantity - $decreaseQuantity;
 
-            return $this->sendResponse([
-                'product' => $product,
-                'stocks' => $stockHistory,
-                'totalQuantity' => $totalQuantity,
-                'totalResidual' => $totalQuantity * $product->purchase_price
-            ], 'Successfully get product stocks', 200);
+            return $this->sendResponse(new ProductStockResource($product, $stockHistory, $totalQuantity, $totalQuantity * $product->purchase_price), 'Successfully get product stocks', 200);
+            // 'product' => $product,
+            // 'stocks' => $stockHistory,
+            // 'totalQuantity' => $totalQuantity,
+            // 'totalResidual' => $totalQuantity * $product->purchase_price
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 400);
         }
