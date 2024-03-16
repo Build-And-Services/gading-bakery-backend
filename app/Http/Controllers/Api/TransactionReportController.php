@@ -30,11 +30,8 @@ class TransactionReportController extends Controller
                 case 'today':
                     $key = $transaction->created_at->format('H:i');
                     break;
-                case 'month':
-                    $key = $transaction->created_at->format('d');
-                    break;
-                case 'year':
-                    $key = $transaction->created_at->format('M');
+                case 'yesterday':
+                    $key = $transaction->created_at->format('H:i');
                     break;
                 default:
                     $key = $transaction->created_at->format('H:i');
@@ -66,12 +63,10 @@ class TransactionReportController extends Controller
         switch ($filter) {
             case 'today':
                 return Carbon::today()->startOfDay();
-            case 'month':
-                return Carbon::now()->startOfMonth()->startOfDay();
-            case 'year':
-                return Carbon::now()->startOfYear()->startOfDay();
-            default:
-                return Carbon::today()->startOfDay();
+            case 'yesterday':
+                return Carbon::yesterday()->startOfDay();
+           default:
+                return Carbon::parse($filter)->startOfDay();
         }
     }
 
@@ -80,12 +75,10 @@ class TransactionReportController extends Controller
         switch ($filter) {
             case 'today':
                 return Carbon::today()->endOfDay();
-            case 'month':
-                return Carbon::now()->endOfMonth()->endOfDay();
-            case 'year':
-                return Carbon::now()->endOfYear()->endOfDay();
+            case 'yesterday':
+                return Carbon::yesterday()->endOfDay();
             default:
-                return Carbon::today()->endOfDay();
+                return Carbon::parse($filter)->endOfDay();
         }
     }
 
