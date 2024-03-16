@@ -15,7 +15,7 @@ class HistoryTransactionController extends BaseController
         $startDate = $this->getStartDate($filter);
         $endDate = $this->getEndDate($filter);
 
-        $transactions = Order::whereBetween('created_at', [$startDate, $endDate])->get();
+        $transactions = Order::whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'desc')->get();
 
         return $this->sendResponse(TransactionResource::collection($transactions), 'Successfully get data', 200);
     }
