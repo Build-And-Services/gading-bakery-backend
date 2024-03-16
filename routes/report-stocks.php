@@ -8,5 +8,5 @@ Route::prefix('/report-stocks')->group(function () {
     Route::get('/today', [StockReportController::class, 'getReportsToday']);
     Route::get('/month/{month}', [StockReportController::class, 'getReportsMonth']);
     Route::get('/year/{year}', [StockReportController::class, 'getReportsYear']);
-    Route::get('/date/{date}', [StockReportController::class, 'customGetReports ']);
+    Route::get('/date/{date}', [StockReportController::class, 'customGetReports']);
 });

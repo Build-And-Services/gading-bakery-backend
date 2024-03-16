@@ -107,7 +107,7 @@ class TransactionReportController extends Controller
     public function getReportsToday($day, $month, $year)
     {
         try {
-            $dailyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%e %b %Y" ) as time'), DB::raw('DATE_FORMAT(created_at, "%H:%i:%s") as hour'), DB::raw('SUM(selling_price) as revenue'), DB::raw('SUM(purchase_price) as profit'))
+            $dailyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%e %b %Y" ) as time'), DB::raw('DATE_FORMAT(created_at, "%H:%i:%s") as hour'), DB::raw('SUM(selling_price * quantity) as revenue'), DB::raw('SUM(purchase_price * quantity) as profit'))
                 ->whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
                 ->whereDay('created_at', $day)
@@ -127,7 +127,7 @@ class TransactionReportController extends Controller
     public function getReportsMonth($month, $year)
     {
         try {
-            $dailyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%e %b %Y") as time'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(selling_price) as revenue'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(purchase_price) as profit'))
+            $dailyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%e %b %Y") as time'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(selling_price * quantity) as revenue'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(purchase_price * quantity) as profit'))
                 ->whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
                 ->groupBy(DB::raw('DATE_FORMAT(created_at, "%e %b %Y")'))
@@ -146,7 +146,7 @@ class TransactionReportController extends Controller
     public function getReportsYear($year)
     {
         try {
-            $monthlyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%M") as time'), DB::raw('SUM(selling_price) as revenue'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(purchase_price) as profit'))
+            $monthlyData = OrderItem::select(DB::raw('DATE_FORMAT(created_at, "%M") as time'), DB::raw('SUM(selling_price * quantity) as revenue'), DB::raw('COUNT(*) as transaction_count'), DB::raw('SUM(purchase_price * quantity) as profit'))
                 ->whereYear('created_at', $year)
                 ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('DATE_FORMAT(created_at, "%M")'))
                 ->get();
