@@ -15,6 +15,7 @@ class TransactionDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'cashier' => $this->user->name,
             'nominal' => $this->nominal,
             'total_price' => $this->calculateTotalOrderPrice(),
