@@ -13,7 +13,7 @@ class ProductController extends BaseController
 {
     public function index()
     {
-        $products = Product::latest()->get();
+        $products = Product::orderBy('name', 'asc')->get();
         return $this->sendResponse(ProductResource::collection($products), "Successfully get data", 200);
     }
 
