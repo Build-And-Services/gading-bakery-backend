@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
 {
@@ -15,11 +16,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker::create('id_ID');
+        $image = $faker->image('public/images/profiles', 640, 480, null, false);
         User::create(
             [
                 'name' => 'Owner',
                 'email' => 'owner@mail.com',
-                'image' => '/user/[number-date]-image.js',
+                'image' => url("/images/profiles/{$image}"),
                 'password' => bcrypt('iniowner'),
                 'role' => 'owner'
             ],
@@ -28,7 +31,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@mail.com',
-                'image' => '/user/[number-date]-image.js',
+                'image' => url("/images/profiles/{$image}"),
                 'password' => bcrypt('iniadmin'),
                 'role' => 'admin'
             ]
@@ -37,7 +40,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Cashier',
                 'email' => 'cashier@mail.com',
-                'image' => '/user/[number-date]-image.js',
+                'image' => url("/images/profiles/{$image}"),
                 'password' => bcrypt('inicashier'),
                 'role' => 'cashier',
             ]
