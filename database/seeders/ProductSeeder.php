@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
 
         Product::create([
             'name' => $faker->name,
-            'image' => url("/images/categories/{$image}"),
+            'image' => url("/images/products/{$image}"),
             'product_code' => '0000001sX',
             'purchase_price' => 8000,
             'selling_price' => 10000,
