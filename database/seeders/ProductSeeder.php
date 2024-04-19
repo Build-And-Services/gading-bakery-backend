@@ -21,8 +21,8 @@ class ProductSeeder extends Seeder
 
         Product::create([
             'name' => $faker->name,
-            'image' => 'https://stagging.gading-bakery.com/images/products/' . $image,
-            'product_code' => '0000001X',
+            'image' => url("/images/categories/{$image}"),
+            'product_code' => '0000001sX',
             'purchase_price' => 8000,
             'selling_price' => 10000,
             'category_id' => 1
