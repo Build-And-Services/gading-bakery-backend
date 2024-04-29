@@ -27,7 +27,6 @@ class ProductController extends BaseController
                 'product_code' => 'required|unique:products,product_code',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
-                'category_id' => 'required|exists:categories,id',
                 'quantity' => 'required|integer',
             ], [
                 'product_code.unique' => 'The :attribute has already been taken.'
@@ -77,7 +76,6 @@ class ProductController extends BaseController
                 'product_code' => 'required',
                 'purchase_price' => 'required|integer',
                 'selling_price' => 'required|integer',
-                'category_id' => 'required|exists:categories,id',
             ]);
 
             $product = Product::findOrFail($id);
