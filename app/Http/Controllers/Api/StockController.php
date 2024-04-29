@@ -46,7 +46,7 @@ class StockController extends BaseController
     {
         try {
             $product = Product::findOrFail($id);
-            $stockHistory = $product->stocks()->get();
+            $stockHistory = $product->stocks()->latest()->get();
 
             $increaseQuantity = $product->getTotalIncreaseQuantity();
             $decreaseQuantity = $product->getTotalDecreaseQuantity();
