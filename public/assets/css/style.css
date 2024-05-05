@@ -1197,8 +1197,8 @@ p {
 
 @media (max-width: 767px) {
     .banner-thumb {
-        display: flex;
-        justify-content: center;
+        display: flex !important;
+        justify-content: center !important;
     }
     .banner-thumb img {
         width: 200px;
