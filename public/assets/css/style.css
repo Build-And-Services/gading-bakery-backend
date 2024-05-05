@@ -1194,6 +1194,20 @@ p {
 .banner-area .banner-items .banner-thumb {
     animation: ImgBounce 8s ease-in-out 0s infinite alternate;
 }
+
+@media (max-width: 767px) {
+    .banner-thumb {
+        display: flex;
+        justify-content: center;
+    }
+    .banner-thumb img {
+        width: 200px;
+    }
+}
+.banner-thumb img {
+    width: 400px;
+}
+
 @media (max-width: 767px) {
     .banner-area .banner-items .banner-thumb {
         margin-top: 50px;

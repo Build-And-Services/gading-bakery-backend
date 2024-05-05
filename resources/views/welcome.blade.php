@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-lg-6 col-md-5">
                         <div class="banner-thumb text-right wow fadeInUp" data-wow-duration="1500ms">
-                            <img src="assets/images/mobile-2.png" alt="banner" style="width: 400px">
+                            <img src="assets/images/mobile-2.png" alt="banner">
                         </div>
                     </div>
                 </div>
