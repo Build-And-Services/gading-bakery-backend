@@ -18,10 +18,28 @@ class CategorySeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        $image = $faker->image('public/images/categories', 640, 480, null, false);
+        $bakeryImg = $faker->image('public/images/categories', 640, 480, null, false);
         Category::create([
-            'name' => $faker->name,
-            'image' => url("/images/categories/{$image}")
+            'name' => 'Bakery',
+            'image' => url("/images/categories/{$bakeryImg}")
+        ]);
+
+        $kueBasahImg = $faker->image('public/images/categories', 640, 480, null, false);
+        Category::create([
+            'name' => 'Kue Basah',
+            'image' => url("/images/categories/{$kueBasahImg}")
+        ]);
+
+        $cakeImg = $faker->image('public/images/categories', 640, 480, null, false);
+        Category::create([
+            'name' => 'Cake',
+            'image' => url("/images/categories/{$cakeImg}")
+        ]);
+
+        $donutsImg = $faker->image('public/images/categories', 640, 480, null, false);
+        Category::create([
+            'name' => 'Donuts',
+            'image' => url("/images/categories/{$donutsImg}")
         ]);
     }
 }

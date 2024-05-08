@@ -15,10 +15,12 @@ class StockSeeder extends Seeder
      */
     public function run()
     {
-        Stock::create([
-            'quantity' => 100,
-            'type' => 'increase',
-            'product_id' => 1,
-        ]);
+        for ($i = 1; $i <= 70; $i++) {
+            Stock::create([
+                'quantity' => 10,
+                'type' => 'increase',
+                'product_id' => $i,
+            ]);
+        }
     }
 }
