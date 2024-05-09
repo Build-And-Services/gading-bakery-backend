@@ -113,7 +113,7 @@
                                     </ul>
                                 </div> <!-- navbar collapse -->
                                 <div class="navbar-btn d-none d-sm-flex">
-                                    <a class="main-btn" href="#">Download App</a>
+                                    <a class="main-btn" href="https://raw.githubusercontent.com/Build-And-Services/garing-bakery-apk/main/apk/gading-bakery.apk">Download App</a>
                                 </div>
                             </nav>
                         </div> <!-- navigation -->
@@ -136,7 +136,7 @@
                             <h1 class="title">Gading Bakery</h1>
                             <p>Selamat datang di Gading Bakery, sebagai toko roti yang telah melayani pelanggan dengan
                                 bangga, kami di Gading Bakery menghadirkan berbagai pilihan roti, kue, dan camilan.</p>
-                            <a class="main-btn" href="#">Download App</a>
+                            <a class="main-btn" href="https://raw.githubusercontent.com/Build-And-Services/garing-bakery-apk/main/apk/gading-bakery.apk">Download App</a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
@@ -214,7 +214,7 @@
                                             <p>Point of Sales System of Gading Bakery</p>
                                         </div>
                                         <div class="link">
-                                            <a class="main-btn" href="#">Download</a>
+                                            <a class="main-btn" href="https://raw.githubusercontent.com/Build-And-Services/garing-bakery-apk/main/apk/gading-bakery.apk">Download</a>
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +302,7 @@
 
     <!--====== FOOTER PART START ======-->
 
-    <section class="footer-area mt-5 pt-5">
+    <section class="footer-area pt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-7 col-sm-9">
