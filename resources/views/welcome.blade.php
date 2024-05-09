@@ -8,6 +8,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:image" content="https://gading-bakery.com/assets/images/logo-gading.png" />
 
     <!--====== Title ======-->
     <title>Gading Bakery</title>
